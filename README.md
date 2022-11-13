@@ -1,5 +1,7 @@
 # Package a Google Cloud Function in Java
 
+A GitHub Action to package a Google Cloud Function in Java with Maven.
+
 Google Cloud Functions in Java [should be packaged as an Uber JAR](https://cloud.google.com/functions/docs/concepts/java-deploy#deploy_from_a_jar).
 
 The [`maven-shade-plugin`](https://maven.apache.org/plugins/maven-shade-plugin) is used to build the Uber JAR. While configuring it in the `pom.xml` is the recommended way to use it, here we execute it from the command line so the `pom.xml` doesn't have to be edited.
@@ -31,7 +33,11 @@ jobs:
       ENTRYPOINT: com.example.Entrypoint
     steps:
       - uses: actions/checkout@v3
-      - uses: axel-op/package-google-cloud-function-java@main
+      - uses: actions/setup-java@v2
+        with:
+          java-version: 11
+          distribution: adopt
+      - uses: axel-op/package-java-google-cloud-function@main
         id: package
       - name: Authenticate on Google Cloud
         uses: google-github-actions/auth@v0
